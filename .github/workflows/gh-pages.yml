@@ -27,12 +27,7 @@ jobs:
               
       - name: generate graphs
         run: |
-          python generate_graphs.py
-
-      - name: debug
-        run: |
-          sudo apt install tree
-          tree
+          python generate_graphs.py --timestamp
 
       - name: deploy
         uses: peaceiris/actions-gh-pages@v3
