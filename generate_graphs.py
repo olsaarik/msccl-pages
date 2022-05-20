@@ -1,9 +1,12 @@
+# Copyright (c) Microsoft Corporation.
+
 import os
 import re
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib
 import humanfriendly
+import tabulate
 
 
 #################
@@ -13,10 +16,10 @@ import humanfriendly
 main_name = 'msccl'
 baseline_name = 'nccl'
 
-
 #######################
 # Load and parse data #
 #######################
+
 
 def parse_nccl_tests_log(path):
     """ Given a path to a nccl-tests log file load it, parse the timing measurements and output the size and time
@@ -61,7 +64,7 @@ def load_data(data_logs):
 # Load all the data logs
 data = load_data(find_data_logs())
 
-# Collect lists of all the configurations and collectives
+# Collect list of all the configurations
 configs = sorted(set(key[0] for key in data))
 collectives = sorted(set(key[1] for key in data))
 
@@ -69,6 +72,9 @@ collectives = sorted(set(key[1] for key in data))
 speedups = {}
 for config in configs:
     for collective in collectives:
+        # Skip if either the main or baseline results are missing
+        if (config, collective, main_name) not in data or (config, collective, baseline_name) not in data:
+            continue
         # Find the main and baseline results
         main_sizes, main_times = data[(config, collective, main_name)]
         baseline_sizes, baseline_times = data[(
@@ -96,6 +102,7 @@ for config in configs:
 def format_size(size):
     return humanfriendly.format_size(int(size)).replace('bytes', 'B')
 
+
 def plot_common(ax, sizes, speedup):
     plt.axhline(y=1, color='black', linestyle='--', linewidth=0.75)
     ax.plot(sizes, speedup, color='red')
@@ -103,15 +110,46 @@ def plot_common(ax, sizes, speedup):
     ax.get_xaxis().set_major_formatter(
         matplotlib.ticker.FuncFormatter(lambda x, p: format_size(x)))
 
+
+def thumbnail_path(config, collective):
+    return f'graphs/{config}_{collective}_thumbnail.png'
+
+
 def plot_thumbnail(sizes, speedup):
     # Plot the speedup
-    fig, ax = plt.subplots(figsize=(4,3))
+    fig, ax = plt.subplots(figsize=(4, 3))
     plot_common(ax, sizes, speedup)
-    fig.savefig(f'graphs/{config}_{collective}_thumbnail.png',
-                bbox_inches='tight')
+    fig.savefig(thumbnail_path(config, collective), bbox_inches='tight')
     plt.close(fig)
+
 
 # Create a separate figure for each combination of config and collective
 for config, collective in speedups:
+    print(f'Plotting {config}/{collective}')
     sizes, speedup = speedups[(config, collective)]
     plot_thumbnail(sizes, speedup)
+
+
+################
+# Render pages #
+################
+
+def thumbnail_embed(config, collective):
+    return f'![Speedup for {collective} on {config}]({thumbnail_path(config, collective)})'
+
+
+# Gather table of thumbnail paths
+thumbnails = []
+for config in configs:
+    row = [config]
+    for collective in collectives:
+        if (config, collective) in speedups:
+            row.append(thumbnail_embed(config, collective))
+        else:
+            row.append('')
+    thumbnails.append(row)
+
+with open('speedups_table.md', 'w') as f:
+    print('Writing speedups_table.md')
+    f.write(tabulate.tabulate(thumbnails, headers=[
+            'Configuration'] + collectives, tablefmt='github'))
