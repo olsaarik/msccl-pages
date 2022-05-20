@@ -2,11 +2,13 @@
 
 import os
 import re
+import time
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib
 import humanfriendly
 import tabulate
+import argparse
 
 
 #################
@@ -17,6 +19,21 @@ main_name = 'msccl'
 baseline_name = 'nccl'
 graph_width = 2
 graph_aspect_ratio = 4/3
+
+
+#############
+# Arguments #
+#############
+
+# Parse command line arguments
+parser = argparse.ArgumentParser(
+    description='Generate graphs for the MSCCL leaderboard page')
+# Argument to specify if a unique identifier should be added to all output file names
+parser.add_argument('--timestamp', action='store_true',
+                    help='Add a unique identifier to all graph file names')
+args = parser.parse_args()
+timestamp = f'_{int(time.time())}' if args.timestamp else ''
+
 
 #######################
 # Load and parse data #
@@ -114,12 +131,13 @@ def plot_common(ax, sizes, speedup):
 
 
 def thumbnail_path(config, collective):
-    return f'graphs/{config}_{collective}_thumbnail.png'
+    return f'graphs/{config}_{collective}_thumbnail{timestamp}.png'
 
 
 def plot_thumbnail(sizes, speedup):
     # Plot the speedup
-    fig, ax = plt.subplots(figsize=(graph_width, graph_width / graph_aspect_ratio))
+    fig, ax = plt.subplots(
+        figsize=(graph_width, graph_width / graph_aspect_ratio))
     plot_common(ax, sizes, speedup)
     path = thumbnail_path(config, collective)
     print(f'Writing {os.path.abspath(path)}')
