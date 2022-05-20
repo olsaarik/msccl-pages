@@ -15,6 +15,8 @@ import tabulate
 
 main_name = 'msccl'
 baseline_name = 'nccl'
+graph_width = 2
+graph_aspect_ratio = 4/3
 
 #######################
 # Load and parse data #
@@ -117,7 +119,7 @@ def thumbnail_path(config, collective):
 
 def plot_thumbnail(sizes, speedup):
     # Plot the speedup
-    fig, ax = plt.subplots(figsize=(4, 3))
+    fig, ax = plt.subplots(figsize=(graph_width, graph_width / graph_aspect_ratio))
     plot_common(ax, sizes, speedup)
     path = thumbnail_path(config, collective)
     print(f'Writing {os.path.abspath(path)}')
