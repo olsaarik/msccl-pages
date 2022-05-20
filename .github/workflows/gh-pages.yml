@@ -44,4 +44,4 @@ jobs:
       - name: debug
         run: |
           sudo apt install tree
-          tree
+          tree /home/runner/
