@@ -8,12 +8,12 @@ title: MSCCL Leaderboard
 collective communication algorithms for multiple accelerators supported by Microsoft Azure. MSCCL's enables hardware and
 application specific optimizations that can deliver huge speedups over unspecialized communication algorithms.
 
-The table below shows speedups given by switching from [NCCL](https://github.com/NVIDIA/nccl) to [MSCCL](https://github.com/microsoft/msccl). To get these speedups in your own Microsoft Azure workload
-follow [the instructions in msccl-tools](https://github.com/microsoft/msccl-tools#readme).
+The table below shows speedups given by switching from NVIDIA's NCCL to MSCCL. To get these speedups in your own Microsoft Azure workload
+follow the instructions in the [msccl-tools](https://github.com/microsoft/msccl-tools#readme) and [msccl](https://github.com/microsoft/msccl#readme) repositories.
 
 {% include_relative speedups_table.md %}
 
-The graphs in the table above show the speedup on the Y axis for a range of sizes on the X axis. Each graph shows the
+The graphs in the table above show the speedup on the Y axis for a range of user data sizes on the X axis. Each graph shows the
 speedup for a specific hardware configuration and collective operation. For example, the graph in the "NDv4" row and
 "Allreduce" column shows the speedups given by MSCCL for the [Allreduce
 collective](https://en.wikipedia.org/wiki/Collective_operation#All-Reduce_[5]) when running on a single [Azure NDv4 VM containing 8
