@@ -15,8 +15,8 @@ follow [the instructions in msccl-tools](https://github.com/microsoft/msccl-tool
 
 The graphs in the table above show the speedup on the Y axis for a range of sizes on the X axis. Each graph shows the
 speedup for a specific hardware configuration and collective operation. For example, the graph in the "NDv4" row and
-"Allreduce" column compares the performance for running the [Allreduce
-collective](https://en.wikipedia.org/wiki/Collective_operation#All-Reduce_[5]) with a single [Azure NDv4 VM containing 8
+"Allreduce" column shows the speedups given by MSCCL for the [Allreduce
+collective](https://en.wikipedia.org/wiki/Collective_operation#All-Reduce_[5]) when running on a single [Azure NDv4 VM containing 8
 NVIDIA A100 GPUs](https://docs.microsoft.com/en-us/azure/virtual-machines/nda100-v4-series).
 
 # Methods
