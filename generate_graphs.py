@@ -17,8 +17,11 @@ import argparse
 
 main_name = 'msccl'
 baseline_name = 'nccl'
-graph_width = 2
+graph_width = 4
 graph_aspect_ratio = 4/3
+matplotlib_rc_params = {
+    'font.size': '16'
+}
 
 
 #############
@@ -144,6 +147,8 @@ def plot_thumbnail(sizes, speedup):
     fig.savefig(path, bbox_inches='tight')
     plt.close(fig)
 
+
+matplotlib.rcParams.update(matplotlib_rc_params)
 
 # Create a separate figure for each combination of config and collective
 for config, collective in speedups:
