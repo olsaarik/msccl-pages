@@ -119,13 +119,14 @@ def plot_thumbnail(sizes, speedup):
     # Plot the speedup
     fig, ax = plt.subplots(figsize=(4, 3))
     plot_common(ax, sizes, speedup)
-    fig.savefig(thumbnail_path(config, collective), bbox_inches='tight')
+    path = thumbnail_path(config, collective)
+    print(f'Writing {os.path.abspath(path)}')
+    fig.savefig(path, bbox_inches='tight')
     plt.close(fig)
 
 
 # Create a separate figure for each combination of config and collective
 for config, collective in speedups:
-    print(f'Plotting {config}/{collective}')
     sizes, speedup = speedups[(config, collective)]
     plot_thumbnail(sizes, speedup)
 
@@ -149,7 +150,8 @@ for config in configs:
             row.append('')
     thumbnails.append(row)
 
-with open('speedups_table.md', 'w') as f:
-    print('Writing speedups_table.md')
+table_path = 'speedups_table.md'
+with open(table_path, 'w') as f:
+    print(f'Writing {os.path.abspath(table_path)}')
     f.write(tabulate.tabulate(thumbnails, headers=[
             'Configuration'] + collectives, tablefmt='github'))
