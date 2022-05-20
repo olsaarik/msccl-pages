@@ -8,10 +8,8 @@ title: MSCCL Leaderboard
 collective communication algorithms for multiple accelerators supported by Microsoft Azure. MSCCL's enables hardware and
 application specific optimizations that can deliver huge speedups over unspecialized communication algorithms.
 
-This page show the speedup given by switching to [MSCCL](https://github.com/microsoft/msccl) from [NCCL](https://github.com/NVIDIA/nccl). To get these speedups in your Microsoft Azure workload
+The table below shows speedups given by switching from [NCCL](https://github.com/NVIDIA/nccl) to [MSCCL](https://github.com/microsoft/msccl). To get these speedups in your own Microsoft Azure workload
 follow [the instructions in msccl-tools](https://github.com/microsoft/msccl-tools#readme).
-
-# Speedups
 
 {% include_relative speedups_table.md %}
 
